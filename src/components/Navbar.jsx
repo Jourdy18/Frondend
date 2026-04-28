@@ -21,7 +21,6 @@ const Navbar = () => {
   return (
     <nav className="bg-black text-white px-8 py-4 flex justify-between items-center sticky top-0 z-50 shadow-lg">
       
-      {/* LOGO */}
       <Link
         to="/home"
         className="text-3xl font-bold tracking-wide"
@@ -29,7 +28,6 @@ const Navbar = () => {
         ShoeStore
       </Link>
 
-      {/* MENU */}
       <ul className="hidden md:flex gap-8 items-center">
         
         <li>
@@ -68,7 +66,6 @@ const Navbar = () => {
           </Link>
         </li>
 
-        {/* 🔥 RECOMMENDATION */}
         <li>
           <Link
             to="/recommendation"
@@ -79,7 +76,6 @@ const Navbar = () => {
           </Link>
         </li>
 
-        {/* 🔥 ANALYTICS */}
         <li>
           <Link
             to="/analytics"
@@ -92,10 +88,8 @@ const Navbar = () => {
 
       </ul>
 
-      {/* RIGHT SIDE */}
       <div className="flex items-center gap-6">
 
-        {/* PROFILE */}
         <Link
           to="/profile"
           className="hover:text-gray-300 transition"
@@ -104,7 +98,6 @@ const Navbar = () => {
           <FaUser className="text-2xl" />
         </Link>
 
-        {/* CART */}
         <Link
           to="/cart"
           className="relative hover:text-gray-300 transition"
@@ -112,7 +105,6 @@ const Navbar = () => {
         >
           <FaShoppingCart className="text-2xl" />
 
-          {/* badge */}
           <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
             0
           </span>

@@ -1,19 +1,23 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaArrowLeft } from 'react-icons/fa';
+import {
+  FaArrowLeft,
+  FaBox,
+  FaCheckCircle,
+  FaClock,
+  FaTruck,
+  FaEye,
+  FaTimes,
+} from 'react-icons/fa';
 
 import shoe1 from '../assets/sepatu1.jpg';
 import shoe2 from '../assets/sepatu2.jpg';
 import shoe3 from '../assets/sepatu3.jpg';
 
-import {
-  FaBox,
-  FaCheckCircle,
-  FaClock,
-  FaTruck,
-} from 'react-icons/fa';
-
 const OrderHistory = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [selectedOrder, setSelectedOrder] = useState(null);
+
   const orders = [
     {
       id: '1',
@@ -22,6 +26,8 @@ const OrderHistory = () => {
       price: 1000000,
       status: 'Selesai',
       image: shoe1,
+      address: 'Airmadidi, Indonesia',
+      payment: 'Transfer',
     },
     {
       id: '2',
@@ -30,6 +36,8 @@ const OrderHistory = () => {
       price: 1200000,
       status: 'Diproses',
       image: shoe2,
+      address: 'Manado, Indonesia',
+      payment: 'COD',
     },
     {
       id: '3',
@@ -38,6 +46,8 @@ const OrderHistory = () => {
       price: 1500000,
       status: 'Dikirim',
       image: shoe3,
+      address: 'Tomohon, Indonesia',
+      payment: 'COD',
     },
   ];
 
@@ -70,13 +80,13 @@ const OrderHistory = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-6xl mx-auto">
-
+        {/* Tombol Kembali */}
         <button
-            onClick={() => navigate('/home')}
-            className="flex items-center gap-2 bg-gray-700 text-white px-5 py-3 rounded-lg mb-6 hover:bg-gray-800 transition"
+          onClick={() => navigate('/home')}
+          className="flex items-center gap-2 bg-gray-700 text-white px-5 py-3 rounded-lg mb-6 hover:bg-gray-800 transition"
         >
-            <FaArrowLeft />
-            Kembali
+          <FaArrowLeft />
+          Kembali
         </button>
 
         <h1 className="text-4xl font-bold text-center mb-10">
@@ -128,7 +138,11 @@ const OrderHistory = () => {
                     </p>
                   </div>
 
-                  <button className="mt-6 bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition">
+                  <button
+                    onClick={() => setSelectedOrder(order)}
+                    className="mt-6 bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition flex items-center gap-2"
+                  >
+                    <FaEye />
                     Lihat Detail
                   </button>
                 </div>
@@ -136,6 +150,70 @@ const OrderHistory = () => {
             </div>
           ))}
         </div>
+
+        {selectedOrder && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+            onClick={() => setSelectedOrder(null)}
+          >
+            <div
+              className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 relative max-h-[90vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setSelectedOrder(null)}
+                className="absolute top-4 right-4 text-2xl text-gray-500 hover:text-red-500"
+              >
+                <FaTimes />
+              </button>
+
+              <img
+                src={selectedOrder.image}
+                alt={selectedOrder.product}
+                className="w-full h-56 object-cover rounded-xl mb-4"
+              />
+
+              <h2 className="text-2xl font-bold mb-4">
+                {selectedOrder.product}
+              </h2>
+
+              <div className="space-y-3 text-gray-700 text-sm">
+                <p>
+                  <strong>Order ID:</strong> {selectedOrder.id}
+                </p>
+
+                <p>
+                  <strong>Tanggal:</strong> {selectedOrder.date}
+                </p>
+
+                <p>
+                  <strong>Total:</strong> Rp{' '}
+                  {selectedOrder.price.toLocaleString('id-ID')}
+                </p>
+
+                <p>
+                  <strong>Status:</strong> {selectedOrder.status}
+                </p>
+
+                <p>
+                  <strong>Alamat:</strong> {selectedOrder.address}
+                </p>
+
+                <p>
+                  <strong>Metode Pembayaran:</strong>{' '}
+                  {selectedOrder.payment}
+                </p>
+              </div>
+
+              <button
+                onClick={() => setSelectedOrder(null)}
+                className="w-full mt-6 bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition"
+              >
+                Tutup
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

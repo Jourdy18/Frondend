@@ -1,13 +1,15 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 
 const Checkout = () => {
   const navigate = useNavigate();
+  const [paymentMethod, setPaymentMethod] = useState('');
 
-  // ambil data cart
+  // Ambil data cart
   const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
 
-  // hitung total
+  // Hitung total
   const total = cartItems.reduce(
     (sum, item) => sum + item.price,
     0
@@ -19,21 +21,28 @@ const Checkout = () => {
       return;
     }
 
-    alert('Pembayaran berhasil!');
+    if (!paymentMethod) {
+      alert('Silakan pilih metode pembayaran!');
+      return;
+    }
+
+    alert(`Pembayaran dengan ${paymentMethod} berhasil!`);
 
     const orders = JSON.parse(localStorage.getItem('orders')) || [];
 
     const newOrder = {
       id: Date.now(),
-      products: cartItems, // 🔥 simpan semua produk
+      products: cartItems,
       total: total,
       status: 'Diproses',
+      payment: paymentMethod,
+      date: new Date().toLocaleDateString('id-ID'),
     };
 
     orders.push(newOrder);
     localStorage.setItem('orders', JSON.stringify(orders));
 
-    // kosongkan cart
+    // Kosongkan cart
     localStorage.removeItem('cart');
 
     navigate('/orders');
@@ -43,7 +52,7 @@ const Checkout = () => {
     <div className="min-h-screen p-8 bg-gray-100">
       <div className="max-w-2xl mx-auto">
 
-        {/* 🔙 Back */}
+        {/* Tombol Kembali */}
         <button
           onClick={() => navigate('/cart')}
           className="flex items-center gap-2 bg-gray-700 text-white px-5 py-3 rounded-lg mb-6 hover:bg-gray-800 transition"
@@ -52,21 +61,27 @@ const Checkout = () => {
           Kembali
         </button>
 
-        <h1 className="text-4xl font-bold mb-6">Checkout</h1>
+        <h1 className="text-4xl font-bold mb-6">
+          Checkout
+        </h1>
 
         <div className="bg-white p-6 rounded-xl shadow-md">
 
-          {/* 🧾 LIST PRODUK */}
+          {/* List Produk */}
           <div className="mb-6">
-            <h2 className="text-xl font-bold mb-2">Produk:</h2>
+            <h2 className="text-xl font-bold mb-4">
+              Produk
+            </h2>
 
             {cartItems.length === 0 ? (
-              <p className="text-gray-500">Tidak ada produk</p>
+              <p className="text-gray-500">
+                Tidak ada produk
+              </p>
             ) : (
               cartItems.map((item, index) => (
                 <div
                   key={index}
-                  className="flex justify-between border-b py-2"
+                  className="flex justify-between border-b py-3"
                 >
                   <span>{item.name}</span>
                   <span>
@@ -77,30 +92,54 @@ const Checkout = () => {
             )}
           </div>
 
-          {/* 🧾 TOTAL */}
+          {/* Total */}
           <div className="mb-6">
-            <p className="text-lg font-semibold">
+            <p className="text-xl font-bold">
               Total: Rp {total.toLocaleString('id-ID')}
             </p>
           </div>
 
-          {/* 📦 FORM */}
+          {/* Form */}
           <input
             type="text"
             placeholder="Nama Lengkap"
-            className="w-full border p-3 rounded mb-4"
+            className="w-full border p-3 rounded-lg mb-4"
           />
 
           <input
             type="text"
             placeholder="Alamat Pengiriman"
-            className="w-full border p-3 rounded mb-4"
+            className="w-full border p-3 rounded-lg mb-4"
           />
 
-          {/* 💳 BUTTON */}
+          {/* Metode Pembayaran */}
+          <div className="mb-6">
+            <label className="block font-semibold mb-3">
+              Metode Pembayaran
+            </label>
+
+            <select
+              value={paymentMethod}
+              onChange={(e) =>
+                setPaymentMethod(e.target.value)
+              }
+              className="w-full border p-3 rounded-lg"
+            >
+              <option value="">
+                -- Pilih Pembayaran --
+              </option>
+              <option value="COD">
+                Cash On Delivery (COD)
+              </option>
+              <option value="Transfer Bank">
+                Transfer
+              </option>
+            </select>
+          </div>
+
           <button
             onClick={handleCheckout}
-            className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800"
+            className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition"
           >
             Bayar Sekarang
           </button>

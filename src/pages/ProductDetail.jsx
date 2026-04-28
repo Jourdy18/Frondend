@@ -21,14 +21,14 @@ const ProductDetail = () => {
     {
       id: 2,
       name: 'Adidas Runner',
-      price: 800000,
+      price: 1200000,
       image: shoe2,
       desc: 'Cocok untuk lari dan aktivitas outdoor.',
     },
     {
       id: 3,
       name: 'Footstep Casual',
-      price: 600000,
+      price: 1500000,
       image: shoe3,
       desc: 'Desain santai untuk penggunaan sehari-hari.',
     },
