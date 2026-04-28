@@ -1,28 +1,42 @@
+import { useNavigate } from 'react-router-dom';
+
 import shoe1 from '../assets/sepatu1.jpg';
 import shoe2 from '../assets/sepatu2.jpg';
 import shoe3 from '../assets/sepatu3.jpg';
 
 function ProductList() {
+  const navigate = useNavigate();
+
   const products = [
     {
       id: 1,
       name: 'Nike Jordan',
-      price: 'Rp. 1.000.000',
+      price: 1000000, // 🔥 ubah ke number
       image: shoe1,
     },
     {
       id: 2,
       name: 'Arka Khaki',
-      price: 'Rp. 1.200.000',
+      price: 1200000,
       image: shoe2,
     },
     {
       id: 3,
-      name: ' Footstep Footwear',
-      price: 'Rp. 1.500.000',
+      name: 'Footstep Footwear',
+      price: 1500000,
       image: shoe3,
     },
   ];
+
+  const handleAddToCart = (product) => {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    cart.push(product);
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    alert('Produk ditambahkan ke cart!');
+  };
 
   return (
     <section className="py-12 px-8 bg-gray-100">
@@ -34,7 +48,8 @@ function ProductList() {
         {products.map((product) => (
           <div
             key={product.id}
-            className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition duration-300"
+            onClick={() => navigate(`/product/${product.id}`)}
+            className="cursor-pointer bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition duration-300"
           >
             <img
               src={product.image}
@@ -48,10 +63,17 @@ function ProductList() {
               </h3>
 
               <p className="text-gray-600 text-lg mb-4">
-                {product.price}
+                Rp {product.price.toLocaleString('id-ID')}
               </p>
 
-              <button className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition">
+              {/* 🔥 FIX tombol */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation(); // ❗ biar tidak pindah ke detail
+                  handleAddToCart(product);
+                }}
+                className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition"
+              >
                 Add to Cart
               </button>
             </div>

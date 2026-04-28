@@ -6,9 +6,6 @@ const Hero = () => {
         <p className="text-gray-600 text-lg mb-8">
           Koleksi sepatu terbaik dengan kualitas premium.
         </p>
-        <button className="bg-black text-white px-8 py-3 rounded-full hover:bg-gray-800">
-          Belanja Sekarang
-        </button>
       </div>
     </section>
   )
